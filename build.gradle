@@ -1,0 +1,63 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'com.github.rholder:gradle-one-jar:1.0.4'
+        classpath "gradle.plugin.fr.brouillard.oss.gradle:gradle-jgitver-plugin:0.2.0"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'gradle-one-jar'
+apply plugin: 'application'
+apply plugin: "fr.brouillard.oss.gradle.jgitver"
+
+mainClassName = 'com.example.helloworld.HelloWorldApplication'
+
+project.ext {
+    dropwizardVersion = '1.0.0-rc4'
+}
+
+repositories {
+    mavenCentral()
+}
+
+jgitver {
+    mavenLike false
+}
+
+dependencies {
+
+    compile 'io.dropwizard:dropwizard-core:' + dropwizardVersion
+    compile 'io.dropwizard:dropwizard-auth:' + dropwizardVersion
+    compile 'io.dropwizard:dropwizard-metrics-graphite:' + dropwizardVersion
+
+    testCompile 'io.dropwizard:dropwizard-testing:' + dropwizardVersion
+    testCompile('org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-grizzly2:2.23.1') {
+        exclude group: 'javax.servlet', module: 'javax.servlet-api'
+        exclude group: 'junit', module: 'junit'
+    }
+
+}
+
+// Configure the oneJar task
+task oneJar(type: OneJar) {
+    mainClass = mainClassName
+}
+
+// Configure the run task to start the Dropwizard service
+run {
+    args 'server', './config/example.yml'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.13'
+}
+
+artifacts {
+    oneJar
+}

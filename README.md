@@ -9,4 +9,5 @@ Changes so far:
     - one-jar plugin to compile easily to fat jar containing all necessary dependencies to run
   * script for easy setup of graphite is provided in prov folder for easy metrics storage/preview
 
-
+## License
+Apache License v.2.0 - see LICENSE.

@@ -27,7 +27,7 @@ repositories {
 }
 
 jgitver {
-    mavenLike false
+    mavenLike true
 }
 
 dependencies {
